@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-
 import SideBar from './Memberarea';
 import {
   AppRegistry,
   StyleSheet,
+  Platform,
   Text,
   View,
   AsyncStorage,
@@ -11,8 +11,24 @@ import {
   DatePickerIOS,
   TouchableOpacity,
 } from 'react-native'
-import { Drawer, Container, Header, Item, Left,Input, Body, Right, Title, Icon, Content, Footer, FooterTab, Button, Badge } from 'native-base';
-import Map from "./MapContainer/Map"
+import {
+  Drawer,
+  Container,
+  Header,
+  Item,
+  Left,
+  Input,
+  Body,
+  Right,
+  Title,
+  Icon,
+  Content,
+  Footer,
+  FooterTab,
+  Button,
+  Badge
+} from 'native-base';
+import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 
 export default class Exercise extends Component {
   static navigationOptions = {
@@ -20,14 +36,14 @@ export default class Exercise extends Component {
       header: null
   };
 render() {
-  const region = {
-    latitude:-34.9326,
-    longtitude:138.5991,
-    latitudeDelta:0.043,
-    longtitudeDelta:0.034
+  const region ={
+    latitude:-34.9285,
+    longitude:138.6007,
+    latitudeDelta: 0.0922,
+    longitudeDelta:0.0421,
   }
 
-return (
+  return (
 
   <View >
   <Header style={styles.header} >
@@ -46,10 +62,19 @@ return (
           </Right>
 
         </Header>
+
+        <MapView  provider={PROVIDER_GOOGLE}
+          style={styles.containerM}
+          initialRegion={region}
+          >
+            <MapView.Marker
+              coordinate={region}
+              pinColor="blue"
+            />
+        </MapView>
+
       <View style={styles.container }>
-        <Container>
-            <Map region={region}/>
-        </Container>
+
       <Button style={styles.button1} >
           <Icon active style={styles.icon} name='ios-walk' />
           <Text style={styles.text}>Start!</Text>
@@ -78,6 +103,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
 
   },
+  containerM: {
+    height:'65%',
+    width:'100%',
+  },
 
   medkit:{
     color:'red',
@@ -89,6 +118,7 @@ const styles = StyleSheet.create({
     margin:5,
     justifyContent:'center',
     alignSelf:'center',
+    marginTop:20,
     },
     button2:{
       height:60,

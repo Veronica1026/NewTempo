@@ -1,51 +1,33 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
 import {
-  AppRegistry,
   Platform,
+  AppRegistry,
   StyleSheet,
   Text,
-  View
+  View,
+  ImageBackground,
+  TextInput,
+  TouchableOpacity,
+  AsyncStorage,
 } from 'react-native';
+import { StackNavigator } from 'react-navigation';
+import firebase from 'firebase';
 
+import Login from './Login';
+import Memberarea from './Memberarea';
+import ContactMe from './ContactMe';
+import Exercise from './Exercise';
+import MyDiary from './MyDiary';
+import Statistics from './Statistics';
+import UserInfo from './UserInfo';
 
-import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
-
-
-
-
-export default class App extends Component<{}> {
-  render() {
-    const region ={
-      latitude:-34.9285,
-      longitude:138.6007,
-      latitudeDelta: 0.0922,
-      longitudeDelta:0.0421,
-    }
-    return (
-      <MapView  provider={PROVIDER_GOOGLE}
-        style={styles.container}
-        initialRegion={region}
-        >
-          <MapView.Marker
-            coordinate={region}
-            pinColor="blue"
-
-          />
-      </MapView>
-    );
-  }
-}
-
-const styles = StyleSheet.create({
-  container: {
-    height:'70%',
-    width:'100%',
-  },
+export default StackNavigator({
+  Login: { screen: Login},
+  Memberarea: { screen: Memberarea},
+  ContactMe:{ screen: ContactMe},
+  Exercise:{ screen: Exercise},
+  MyDiary:{ screen: MyDiary},
+  Statistics:{ screen: Statistics},
+  UserInfo:{ screen: UserInfo},
 
 });
