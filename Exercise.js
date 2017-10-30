@@ -10,6 +10,7 @@ import {
   TextInput,
   DatePickerIOS,
   TouchableOpacity,
+  Dimensions,
 } from 'react-native'
 import {
   Drawer,
@@ -30,18 +31,68 @@ import {
 } from 'native-base';
 import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 
+let { width, height } = Dimensions.get('window');
+
+const ASPECT_RATIO = width / height;
+const LATITUDE = 0;
+const LONGITUDE = 0;
+const LATITUDE_DELTA = 0.0922;
+const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+
 export default class Exercise extends Component {
   static navigationOptions = {
       title: "Exercise",
       header: null
   };
-render() {
-  const region ={
-    latitude:-34.9285,
-    longitude:138.6007,
-    latitudeDelta: 0.0922,
-    longitudeDelta:0.0421,
-  }
+
+  constructor() {
+   super();
+   this.watchID = null;
+
+   this.state = {
+     region: {
+       latitude: LATITUDE,
+       longitude: LONGITUDE,
+       latitudeDelta: LATITUDE_DELTA,
+       longitudeDelta: LONGITUDE_DELTA,
+     }
+   };
+ }
+
+ componentDidMount() {
+  navigator.geolocation.getCurrentPosition(
+    position => {
+      this.setState({
+        region: {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          latitudeDelta: LATITUDE_DELTA,
+          longitudeDelta: LONGITUDE_DELTA,
+        }
+      });
+    },
+  (error) => console.log(error.message),
+  { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+  );
+  this.watchID = navigator.geolocation.watchPosition(
+    position => {
+      this.setState({
+        region: {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          latitudeDelta: LATITUDE_DELTA,
+          longitudeDelta: LONGITUDE_DELTA,
+        }
+      });
+    }
+  );
+}
+
+componentWillUnmount() {
+  navigator.geolocation.clearWatch(this.watchID);
+}
+
+ render() {
 
   return (
 
@@ -63,14 +114,17 @@ render() {
 
         </Header>
 
-        <MapView  provider={PROVIDER_GOOGLE}
+        <MapView
+          provider={PROVIDER_GOOGLE}
           style={styles.containerM}
-          initialRegion={region}
+          showsUserLocation={ true }
+          region={ this.state.region }
+          onRegionChange={ region => this.setState({ region }) }
+          onRegionChangeComplete={ region => this.setState({ region }) }
           >
-            <MapView.Marker
-              coordinate={region}
-              pinColor="blue"
-            />
+          <MapView.Marker
+            coordinate={ this.state.region }
+          />
         </MapView>
 
       <View style={styles.container }>
