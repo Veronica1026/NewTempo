@@ -46,9 +46,11 @@ export default class Exercise extends Component {
   };
 
   constructor() {
+
    super();
    this.watchID = null;
-
+   this.positions = [];
+   
    this.state = {
      region: {
        latitude: LATITUDE,
@@ -60,6 +62,7 @@ export default class Exercise extends Component {
  }
 
  componentDidMount() {
+
   navigator.geolocation.getCurrentPosition(
     position => {
       this.setState({
@@ -74,8 +77,12 @@ export default class Exercise extends Component {
   (error) => console.log(error.message),
   { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
   );
+
   this.watchID = navigator.geolocation.watchPosition(
     position => {
+      console.log('position changed!. Total positions:', this.positions);
+      this.positions.push(position);
+
       this.setState({
         region: {
           latitude: position.coords.latitude,
@@ -89,6 +96,7 @@ export default class Exercise extends Component {
 }
 
 componentWillUnmount() {
+
   navigator.geolocation.clearWatch(this.watchID);
 }
 
