@@ -11,6 +11,7 @@ import {
   DatePickerIOS,
   TouchableOpacity,
   Dimensions,
+  Alert,
 } from 'react-native'
 import {
   Drawer,
@@ -40,6 +41,7 @@ const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 export default class Exercise extends Component {
+
   static navigationOptions = {
       title: "Exercise",
       header: null
@@ -50,7 +52,8 @@ export default class Exercise extends Component {
    super();
    this.watchID = null;
    this.positions = [];
-   
+   this.distance = 0;
+   this.totalTime = 0;
    this.state = {
      region: {
        latitude: LATITUDE,
@@ -82,7 +85,7 @@ export default class Exercise extends Component {
     position => {
       console.log('position changed!. Total positions:', this.positions);
       this.positions.push(position);
-
+      //we need to draw a line while the user is moving
       this.setState({
         region: {
           latitude: position.coords.latitude,
@@ -136,13 +139,13 @@ componentWillUnmount() {
         </MapView>
 
       <View style={styles.container }>
-
-      <Button style={styles.button1} >
+      
+      <Button style={styles.button1} onPress={this.start}>
           <Icon active style={styles.icon} name='ios-walk' />
           <Text style={styles.text}>Start!</Text>
       </Button>
 
-      <Button style={styles.button2} >
+      <Button style={styles.button2} onPress={this.finish}>
           <Icon active style={styles.icon} name='md-happy' />
           <Text style={styles.text}>Finish!</Text>
       </Button>
@@ -155,6 +158,43 @@ componentWillUnmount() {
     drawer = () => {
   this.props.navigation.navigate('Memberarea');
 }
+
+   start = () => {
+     Alert.alert("Go! Go! Go!", "Timing and location tracking started!");
+     this.distance = 0;
+     this.totalTime = 0;
+     this.positions.length = 0;
+   }
+
+   finish = () => {
+     //calculate total time duration
+     this.totalTime=
+           ((this.positions[this.positions.length - 1].timestamp - this.positions[0].timestamp)/1000);
+
+      // calculate distances
+      var p = 0.017453292519943295;    // Math.PI / 180
+      var c = Math.cos;
+      var a,d,avgSpeed,sum=0;
+
+      //using Haversine formula to calculate the sum of distances of every pair of two near location points
+      for(i=0;i<this.positions.length - 1;i++){
+
+        a = 0.5 - c((this.positions[i+1].coords.latitude - this.positions[i].coords.latitude) * p)/2 +
+          c(this.positions[i].coords.latitude * p) * c(this.positions[i+1].coords.latitude * p) *
+          (1 - c((this.positions[i+1].coords.longitude - this.positions[i].coords.longitude) * p))/2;
+        d=12742 * Math.asin(Math.sqrt(a));
+        sum+=d;
+      }
+      this.distance=sum;
+      avgSpeed=this.distance*1000/this.totalTime;
+       Alert.alert("Well done!", "Distance: "+ this.distance.toFixed(4)+" Km"+'\n'
+               +"Time: " + this.totalTime.toFixed(4)+" s"+'\n'
+               +"Average Speed: " + avgSpeed.toFixed(4)+" m/s")
+
+            // now we need to push this.distance, this.totalTime and avgSpeed to firebase
+
+   }
+
 }
 
 const styles = StyleSheet.create({
