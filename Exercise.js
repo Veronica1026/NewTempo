@@ -31,6 +31,7 @@ import {
   Badge
 } from 'native-base';
 import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
+import firebaseApp from "./FirebaseConfig";
 
 let { width, height } = Dimensions.get('window');
 
@@ -62,7 +63,12 @@ export default class Exercise extends Component {
        longitudeDelta: LONGITUDE_DELTA,
      }
    };
+   this.runRef = this.getRef().child('run');
  }
+
+ getRef() {
+  return firebaseApp.database().ref();
+  }
 
  componentDidMount() {
 
@@ -139,7 +145,7 @@ componentWillUnmount() {
         </MapView>
 
       <View style={styles.container }>
-      
+
       <Button style={styles.button1} onPress={this.start}>
           <Icon active style={styles.icon} name='ios-walk' />
           <Text style={styles.text}>Start!</Text>
@@ -189,9 +195,16 @@ componentWillUnmount() {
       avgSpeed=this.distance*1000/this.totalTime;
        Alert.alert("Well done!", "Distance: "+ this.distance.toFixed(4)+" Km"+'\n'
                +"Time: " + this.totalTime.toFixed(4)+" s"+'\n'
-               +"Average Speed: " + avgSpeed.toFixed(4)+" m/s")
+               +"Average Speed: " + avgSpeed.toFixed(4)+" m/s");
 
             // now we need to push this.distance, this.totalTime and avgSpeed to firebase
+       var record={
+         distance: this.distance.toFixed(4),
+         time: this.totalTime.toFixed(4),
+         speed:avgSpeed.toFixed(4),
+       };
+       console.log('records:', record);
+       this.runRef.push({record});
 
    }
 

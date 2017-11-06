@@ -17,6 +17,7 @@ import Exercise from './Exercise';
 import MyDiary from './MyDiary';
 import Statistics from './Statistics';
 import UserInfo from './UserInfo';
+import EditInfo from './EditInfo';
 
 
 export default class Project extends Component {
@@ -46,6 +47,8 @@ export default class Project extends Component {
               return(<Statistics navigator = {navigator}/>);
               case 'UserInfo':
               return(<UserInfo navigator = {navigator}/>);
+              case 'EditInfo':
+              return(<EditInfo navigator = {navigator}/>);
       }
   }
 }
