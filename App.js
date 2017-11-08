@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import {
   Platform,
   AppRegistry,
@@ -8,28 +8,27 @@ import {
   ImageBackground,
   TextInput,
   TouchableOpacity,
-  AsyncStorage,
-} from 'react-native';
-import { StackNavigator } from 'react-navigation';
-import firebase from 'firebase';
+  AsyncStorage
+} from "react-native";
+import { StackNavigator } from "react-navigation";
+import firebase from "firebase";
 
-import Login from './Login';
-import Memberarea from './Memberarea';
-import ContactMe from './ContactMe';
-import Exercise from './Exercise';
-import MyDiary from './MyDiary';
-import Statistics from './Statistics';
-import UserInfo from './UserInfo';
-import EditInfo from './EditInfo';
+import Login from "./Login";
+import Memberarea from "./Memberarea";
+import ContactMe from "./ContactMe";
+import Exercise from "./Exercise";
+import MyDiary from "./MyDiary";
+import Statistics from "./Statistics";
+import UserInfo from "./UserInfo";
+import EditInfo from "./EditInfo";
 
 export default StackNavigator({
-  Login: { screen: Login},
-  Memberarea: { screen: Memberarea},
-  ContactMe:{ screen: ContactMe},
-  Exercise:{ screen: Exercise},
-  MyDiary:{ screen: MyDiary},
-  Statistics:{ screen: Statistics},
-  UserInfo:{ screen: UserInfo},
-  EditInfo:{ screen: EditInfo},
-
+  Login: { screen: Login },
+  Memberarea: { screen: Memberarea },
+  ContactMe: { screen: ContactMe },
+  Exercise: { screen: Exercise },
+  MyDiary: { screen: MyDiary },
+  Statistics: { screen: Statistics },
+  UserInfo: { screen: UserInfo },
+  EditInfo: { screen: EditInfo }
 });

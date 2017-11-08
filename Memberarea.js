@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import {
   AppRegistry,
   StyleSheet,
@@ -8,11 +8,9 @@ import {
   ImageBackground,
   ScrollView,
   TouchableOpacity,
-  Platform,
-} from 'react-native'
-import {
-  StackNavigator
-} from 'react-navigation';
+  Platform
+} from "react-native";
+import { StackNavigator } from "react-navigation";
 
 import {
   Drawer,
@@ -22,149 +20,142 @@ import {
   Header,
   Button,
   Icon,
-  Badge } from 'native-base';
-
-
-
+  Badge
+} from "native-base";
 
 export default class Memberarea extends Component {
   static navigationOptions = {
-      title: "Memberarea",
-      header: null
+    title: "Memberarea",
+    header: null
   };
+
+  // constructor(props) {
+  //   super(props);
+  //   console.log('screenProps are:', props.screenProps);
+  // }
+  getUserId() {
+    //TODO: validation, log user out maybe?
+    return this.props.navigation.state.params.userId;
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <ImageBackground source={require('./run2.jpg')} style={styles.backgroundImage}>
-
-        <Header style={styles.header}>
-              <Text style={styles.logo1}>New Tempo</Text>
-        </Header>
-        <View style={styles.content}>
+        <ImageBackground
+          source={require("./run2.jpg")}
+          style={styles.backgroundImage}
+        >
+          <Header style={styles.header}>
+            <Text style={styles.logo1}>New Tempo</Text>
+          </Header>
+          <View style={styles.content}>
             <Button style={styles.button} onPress={this.exercise}>
-             <Icon active style={styles.icon} name='pulse' />
-             <Text style={styles.text}>Run</Text>
+              <Icon active style={styles.icon} name="pulse" />
+              <Text style={styles.text}>Run</Text>
             </Button>
 
             <Button style={styles.button} onPress={this.statistics}>
-                <Icon active style={styles.icon} name='paper' />
-                <Text style={styles.text}>Statistics</Text>
+              <Icon active style={styles.icon} name="paper" />
+              <Text style={styles.text}>Statistics</Text>
             </Button>
 
             <Button style={styles.button} onPress={this.myAccount}>
-                <Icon active style={styles.icon} name='person' />
-                <Text style={styles.text}>My Account</Text>
+              <Icon active style={styles.icon} name="person" />
+              <Text style={styles.text}>My Account</Text>
             </Button>
 
             <Button style={styles.button} onPress={this.myDiary}>
-                <Icon active style={styles.icon} name='bookmarks' />
-                <Text style={styles.text}>My Exercise Diary</Text>
+              <Icon active style={styles.icon} name="bookmarks" />
+              <Text style={styles.text}>My Exercise Diary</Text>
             </Button>
 
             <Button style={styles.button} onPress={this.contactMe}>
-                <Icon active style={styles.icon} name='paper-plane' />
-                <Text style={styles.text}>Contact Me</Text>
+              <Icon active style={styles.icon} name="paper-plane" />
+              <Text style={styles.text}>Contact Me</Text>
             </Button>
-
           </View>
         </ImageBackground>
       </View>
     );
-
   }
 
   exercise = () => {
-
-    this.props.navigation.navigate('Exercise');
-    }
+    this.props.navigation.navigate("Exercise");
+  };
 
   statistics = () => {
+    this.props.navigation.navigate("Statistics");
+  };
 
-    this.props.navigation.navigate('Statistics');
-    }
+  myAccount = () => {
+    this.props.navigation.navigate("UserInfo");
+  };
 
-
-
-    myAccount = () => {
-
-      this.props.navigation.navigate('UserInfo');
-      }
-
-      myDiary = () => {
-
-        this.props.navigation.navigate('MyDiary');
-        }
+  myDiary = () => {
+    this.props.navigation.navigate("MyDiary");
+  };
 
   contactMe = () => {
-
-      this.props.navigation.navigate('ContactMe');
-      }
-
+    this.props.navigation.navigate("ContactMe");
+  };
 }
 
 const styles = StyleSheet.create({
-
-  container:{
+  container: {
     flex: 1,
-    flexDirection:'column',
-justifyContent: 'space-between',
-
-
+    flexDirection: "column",
+    justifyContent: "space-between"
   },
-  header:{
+  header: {
     flex: 1,
-    flexDirection:'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor:'rgba(44,122,125,0)',
-    marginTop:60,
-    
-
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(44,122,125,0)",
+    marginTop: 60
   },
-  backgroundImage:{
-    flex:1,
-    alignSelf:'stretch',
-    width:null,
-    justifyContent:'center',
-
+  backgroundImage: {
+    flex: 1,
+    alignSelf: "stretch",
+    width: null,
+    justifyContent: "center"
   },
   content: {
-
-    alignItems: 'center',
-    backgroundColor:'rgba(44,122,125,0.4)',
-    alignSelf:'stretch',
-    marginTop:240,
-    flex: 1,
+    alignItems: "center",
+    backgroundColor: "rgba(44,122,125,0.4)",
+    alignSelf: "stretch",
+    marginTop: 240,
+    flex: 1
   },
 
-  button:{
-    height:60,
-    backgroundColor:'rgba(44,122,125,0)',
+  button: {
+    height: 60,
+    backgroundColor: "rgba(44,122,125,0)",
     width: 280,
-    margin:5,
-    justifyContent:'flex-start'
-    },
+    margin: 5,
+    justifyContent: "flex-start"
+  },
 
-  text:{
-fontSize:15,
-fontWeight: 'bold',
- color:'white',
-    },
+  text: {
+    fontSize: 15,
+    fontWeight: "bold",
+    color: "white"
+  },
 
-  icon:{
- fontSize:30,
- color:'white',
-    },
+  icon: {
+    fontSize: 30,
+    color: "white"
+  },
 
-    logo1: {
-      color:'white',
-      fontSize: 40,
-      fontStyle: 'italic',
-      fontWeight: 'bold',
-      textShadowColor:'#252525',
-      textShadowOffset:{width: 3, height: 2},
-      textShadowRadius: 5,
-      marginTop:90,
-      backgroundColor:'rgba(30,50,59,0)',
-    },
-})
+  logo1: {
+    color: "white",
+    fontSize: 40,
+    fontStyle: "italic",
+    fontWeight: "bold",
+    textShadowColor: "#252525",
+    textShadowOffset: { width: 3, height: 2 },
+    textShadowRadius: 5,
+    marginTop: 90,
+    backgroundColor: "rgba(30,50,59,0)"
+  }
+});
