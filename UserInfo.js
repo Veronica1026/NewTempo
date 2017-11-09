@@ -27,12 +27,40 @@ import {
   Button,
   Badge
 } from "native-base";
+import firebaseApp from "./FirebaseConfig";
 
 export default class UserInfo extends Component {
   static navigationOptions = {
     title: "UserInfo",
     header: null
   };
+
+  constructor(props) {
+    super(props);
+    const userId = 123;
+    this.userRef = this.getRef().child("users/"+ userId + "/");
+    var information;
+
+  }
+  componentDidMount() {
+    this.getInfo();
+  }
+
+  getRef() {
+    return firebaseApp.database().ref();
+  }
+
+getInfo(){
+  //get user information from firebase
+  this.userRef.on('value', function(snapshot) {
+  snapshot.forEach(function(childSnapshot) {
+     information = childSnapshot.val();
+    console.log(information.Name);
+    console.log(information.Height);
+  });
+});
+}
+
   render() {
     return (
       <View>
@@ -65,7 +93,7 @@ export default class UserInfo extends Component {
               </Left>
               <Body />
               <Right>
-                <Text style={styles.info}>Aaron Bennet</Text>
+                <Text style={styles.info}>Aron</Text>
               </Right>
             </ListItem>
             <ListItem style={styles.list}>

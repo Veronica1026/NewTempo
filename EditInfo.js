@@ -41,12 +41,12 @@ export default class UserInfo extends Component {
       Name: "",
       Birthday: "",
       Gender: "",
-      Month: "",
       Height: "",
       Weight: "",
       Email: ""
     };
-    this.userRef = this.getRef().child("users");
+    const userId = 123;
+    this.userRef = this.getRef().child("users/"+ userId + "/");
     this.hanleChange.bind(this);
   }
 
@@ -97,7 +97,6 @@ export default class UserInfo extends Component {
                   underlineColorIos="grey"
                   style={styles.info}
                   text={this.state.Name}
-                  onTextChange={Name => this.setState({ Name })}
                   placeholder="Your Name"
                   value={this.state.Name}
                   onChangeText={Name => this.setState({ Name })}
@@ -218,11 +217,26 @@ export default class UserInfo extends Component {
     this.props.navigation.navigate("Login");
   };
 
-  add = () => {
+  save = () => {
+    var info = {
+      Name: this.state.Name,
+      Birthday: this.state.Birthday,
+      Gender: this.state.Gender,
+      Height: this.state.Height,
+      Weight: this.state.Weight,
+      Email: this.state.Email,
+    };
+    console.log("info:", info);
+    this.userRef.update({ info });
     this.props.navigation.navigate("UserInfo");
-
-    AlertIOS.alert("Invaid inputs!");
   };
+
+  clear = () => {
+
+ //clear the form
+  };
+
+
 }
 
 const styles = StyleSheet.create({

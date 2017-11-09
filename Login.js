@@ -37,7 +37,6 @@ export default class Login extends Component<{}> {
               onTextChange={email => this.setState({ email })}
               placeholder="username"
               value={this.state.email}
-              onChangeText={email => this.setState({ email })}
             />
 
             <TextInput
@@ -45,7 +44,6 @@ export default class Login extends Component<{}> {
               underlineColorIos="transparent"
               style={styles.input}
               text={this.state.password}
-              onTextChange={email => this.setState({ password })}
               placeholder="password"
               value={this.state.password}
               onChangeText={password => this.setState({ password })}
