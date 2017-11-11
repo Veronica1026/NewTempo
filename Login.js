@@ -144,9 +144,9 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   logo1: {
-    marginTop: 200,
+    marginTop: 120,
     color: "white",
-    fontSize: 40,
+    fontSize: 28,
     margin: 40,
     fontStyle: "italic",
     fontWeight: "bold",
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
   logo2: {
     padding: 60,
     color: "white",
-    fontSize: 14,
+    fontSize: 10,
     margin: 10,
     fontFamily: "Helvetica Neue",
     fontWeight: "bold",

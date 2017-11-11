@@ -26,6 +26,7 @@ import {
   Button,
   Badge
 } from "native-base";
+import call from 'react-native-phone-call';
 
 export default class Statistics extends Component {
   static navigationOptions = {
@@ -46,7 +47,7 @@ export default class Statistics extends Component {
           </Body>
           <Right>
             <Button transparent>
-              <Icon name="medkit" style={styles.medkit} />
+              <Icon name="medkit" style={styles.medkit} onPress={this.callTU}/>
             </Button>
           </Right>
         </Header>
@@ -74,6 +75,15 @@ export default class Statistics extends Component {
   drawer = () => {
     this.props.navigation.dispatch({ type: "Navigation/BACK" });
   };
+
+  callTU = () => {
+  const callnumber = {
+    number: "0405416669", // the number to call, string value
+    prompt: true // the user would be prompt prior to the call
+  };
+  call(callnumber).catch(console.error);
+};
+
 }
 
 const styles = StyleSheet.create({

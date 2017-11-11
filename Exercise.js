@@ -32,6 +32,7 @@ import {
 } from "native-base";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import firebaseApp from "./FirebaseConfig";
+import call from 'react-native-phone-call';
 
 let { width, height } = Dimensions.get("window");
 
@@ -125,7 +126,7 @@ export default class Exercise extends Component {
           </Body>
           <Right>
             <Button transparent>
-              <Icon name="medkit" style={styles.medkit} />
+              <Icon name="medkit" style={styles.medkit} onPress={this.callTU}/>
             </Button>
           </Right>
         </Header>
@@ -139,7 +140,7 @@ export default class Exercise extends Component {
           onRegionChangeComplete={region => this.setState({ region })}
         >
           <MapView.Marker coordinate={this.state.region} />
-        
+
 
         </MapView>
 
@@ -166,8 +167,14 @@ export default class Exercise extends Component {
     this.distance = 0;
     this.totalTime = 0;
     this.positions.length = 0;
+  };
 
-
+  callTU = () => {
+    const callnumber = {
+      number: "0405416669", // the number to call, string value
+      prompt: true // the user would be prompt prior to the call
+    };
+    call(callnumber).catch(console.error);
   };
 
   finish = () => {
@@ -242,7 +249,7 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   containerM: {
-    height: "65%",
+    height: "68%",
     width: "100%"
   },
 
@@ -250,16 +257,16 @@ const styles = StyleSheet.create({
     color: "red"
   },
   button1: {
-    height: 60,
+    height: 40,
     backgroundColor: "rgba(44,122,125,0.4)",
     width: 240,
     margin: 5,
     justifyContent: "center",
     alignSelf: "center",
-    marginTop: 20
+    marginTop: 10
   },
   button2: {
-    height: 60,
+    height: 40,
     backgroundColor: "#b9d2f7",
     width: 240,
     margin: 5,

@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "rgba(44,122,125,0.4)",
     alignSelf: "stretch",
-    marginTop: 240,
+    marginTop: 140,
     flex: 1
   },
 

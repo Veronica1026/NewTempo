@@ -29,6 +29,7 @@ import {
   Badge
 } from "native-base";
 import firebaseApp from "./FirebaseConfig";
+import call from 'react-native-phone-call';
 
 export default class UserInfo extends Component {
   static navigationOptions = {
@@ -45,7 +46,7 @@ export default class UserInfo extends Component {
       Gender: "",
       Height: "",
       Weight: "",
-      Mobile: ""
+
     };
     const userId = 123;
     this.userRef = this.getRef().child("users/"+ userId + "/");
@@ -81,7 +82,7 @@ export default class UserInfo extends Component {
           </Body>
           <Right>
             <Button transparent>
-              <Icon name="medkit" style={styles.medkit} />
+              <Icon name="medkit" style={styles.medkit} onPress={this.callTU}/>
             </Button>
           </Right>
         </Header>
@@ -150,23 +151,7 @@ export default class UserInfo extends Component {
               </Right>
             </ListItem>
 
-            <ListItem style={styles.list}>
-              <Left>
-                <Text>Mobile</Text>
-              </Left>
-              <Body />
-              <Right>
-                <TextInput
-                  underlineColorIos="grey"
-                  style={styles.info}
-                  text={this.state.Mobile}
-                  onTextChange={Mobile => this.setState({ Mobile })}
-                  placeholder="Mobile Number"
-                  value={this.state.Mobile}
-                  onChangeText={Mobile => this.setState({ Mobile })}
-                />
-              </Right>
-            </ListItem>
+
 
             <Separator bordered style={styles.sep}>
               <Text>Health Parameters</Text>
@@ -225,7 +210,13 @@ export default class UserInfo extends Component {
     this.pickImage();
   };
 
-
+  callTU = () => {
+  const callnumber = {
+    number: "0405416669", // the number to call, string value
+    prompt: true // the user would be prompt prior to the call
+  };
+  call(callnumber).catch(console.error);
+};
 
   logout = () => {
     this.props.navigation.navigate("Login");
@@ -239,7 +230,7 @@ export default class UserInfo extends Component {
       Gender: this.state.Gender,
       Height: this.state.Height,
       Weight: this.state.Weight,
-      Mobile: this.state.Mobile,
+
     };
     console.log("info:", info);
     this.userRef.update({ info });
@@ -259,9 +250,9 @@ const styles = StyleSheet.create({
     color: "red"
   },
   avatar: {
-    marginTop: 10,
-    height: 160,
-    width: 160,
+    marginTop: 5,
+    height: 120,
+    width: 120,
     alignSelf: "center",
     borderWidth: 3,
     borderColor: "grey"
@@ -299,7 +290,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white"
   },
   decision: {
-    marginTop: 10,
+    marginTop: 5,
     flexDirection: "row",
     justifyContent: "center"
   },
@@ -309,7 +300,7 @@ const styles = StyleSheet.create({
     height: 30,
     backgroundColor: "#b5dcff",
     width: 200,
-    margin: 1,
+    margin: 10,
     justifyContent: "center"
   },
 

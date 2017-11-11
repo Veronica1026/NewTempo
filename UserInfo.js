@@ -30,7 +30,9 @@ import {
   Button,
   Badge
 } from "native-base";
+import call from 'react-native-phone-call'
 import firebaseApp from "./FirebaseConfig";
+
 
 var information=[];
 
@@ -79,7 +81,7 @@ getInfo(){
           </Body>
           <Right>
             <Button transparent>
-              <Icon name="medkit" style={styles.medkit} />
+              <Icon name="medkit" style={styles.medkit} onPress={this.callTU}/>
             </Button>
           </Right>
         </Header>
@@ -125,15 +127,7 @@ getInfo(){
               </Right>
             </ListItem>
 
-            <ListItem style={styles.list}>
-              <Left>
-                <Text>Mobile</Text>
-              </Left>
-              <Body />
-              <Right>
-                <Text style={styles.info}>{information.Mobile}</Text>
-              </Right>
-            </ListItem>
+
 
             <Separator bordered style={styles.sep}>
               <Text>Health Parameters</Text>
@@ -178,6 +172,14 @@ getInfo(){
     //this.props.navigation.dispatch({ type: "Navigation/BACK" });
   };
 
+  callTU = () => {
+  const callnumber = {
+    number: "0405416669", // the number to call, string value
+    prompt: true // the user would be prompt prior to the call
+  };
+  call(callnumber).catch(console.error);
+};
+
   logout = () => {
     this.props.navigation.navigate("Login");
   };
@@ -196,21 +198,14 @@ const styles = StyleSheet.create({
     color: "red"
   },
   avatar: {
-    marginTop: 20,
-    height: 160,
-    width: 160,
+    margin: 10,
+    height: 120,
+    width: 120,
     alignSelf: "center",
     borderWidth: 3,
     borderColor: "grey"
   },
-  button: {
-    height: 40,
-    backgroundColor: "rgba(44,122,125,0.2)",
-    width: 160,
-    margin: 5,
-    justifyContent: "flex-start",
-    alignSelf: "center"
-  },
+
 
   text: {
     color: "grey"
@@ -232,11 +227,11 @@ const styles = StyleSheet.create({
     alignItems: "flex-end"
   },
   listV: {
-    marginTop: 20,
+    marginTop: 10,
     backgroundColor: "white"
   },
   decision: {
-    marginTop: 10,
+    marginTop: 5,
     flexDirection: "row",
     justifyContent: "space-between"
   },
@@ -246,7 +241,7 @@ const styles = StyleSheet.create({
     height: 30,
     backgroundColor: "#b9d2f7",
     width: 120,
-    margin: 1,
+    margin: 10,
     justifyContent: "center"
   },
 
@@ -255,7 +250,7 @@ const styles = StyleSheet.create({
     height: 30,
     backgroundColor: "#c2c7ce",
     width: 120,
-    margin: 1,
+    margin: 10,
     justifyContent: "center"
   }
 });

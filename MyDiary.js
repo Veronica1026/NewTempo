@@ -31,6 +31,7 @@ import {
   Button,
   Badge
 } from "native-base";
+import call from 'react-native-phone-call';
 
 const cards = [
   {
@@ -71,7 +72,7 @@ export default class MyDiary extends Component {
             </Body>
             <Right>
               <Button transparent>
-                <Icon name="medkit" style={styles.medkit} />
+                <Icon name="medkit" style={styles.medkit} onPress={this.callTU}/>
               </Button>
             </Right>
           </Header>
@@ -137,7 +138,7 @@ export default class MyDiary extends Component {
             <Text style={{ marginRight: 10 }}>Swipe Right</Text>
           </Button>
         </View>
-        
+
       </Container>
     );
   }
@@ -145,6 +146,14 @@ export default class MyDiary extends Component {
   drawer = () => {
     this.props.navigation.dispatch({ type: "Navigation/BACK" });
   };
+
+  callTU = () => {
+const callnumber = {
+  number: "0405416669", // the number to call, string value
+  prompt: true // the user would be prompt prior to the call
+};
+call(callnumber).catch(console.error);
+};
 }
 
 const styles = StyleSheet.create({
@@ -161,9 +170,9 @@ const styles = StyleSheet.create({
     height: 40,
     backgroundColor: "rgba(44,122,125,0.2)",
     width: 140,
-    margin: 5,
+    margin: 10,
     justifyContent: "space-between",
     alignSelf: "center",
-    margin: 20
+    margin: 10
   }
 });
