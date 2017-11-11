@@ -24,6 +24,8 @@ import {
 } from "native-base";
 
 export default class Memberarea extends Component {
+
+
   static navigationOptions = {
     title: "Memberarea",
     header: null

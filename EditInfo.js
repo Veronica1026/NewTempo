@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Text,
   View,
+  ImagePickerIOS,
   Image,
   AsyncStorage,
   TextInput,
@@ -38,12 +39,13 @@ export default class UserInfo extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      image: null,
       Name: "",
       Birthday: "",
       Gender: "",
       Height: "",
       Weight: "",
-      Email: ""
+      Mobile: ""
     };
     const userId = 123;
     this.userRef = this.getRef().child("users/"+ userId + "/");
@@ -56,6 +58,13 @@ export default class UserInfo extends Component {
 
   hanleChange(value) {
     this.setState({ value });
+  }
+
+  pickImage() {
+    // openSelectDialog(config, successCallback, errorCallback);
+    ImagePickerIOS.openSelectDialog({}, imageUri => {
+      this.setState({ image: imageUri });
+    }, error => console.error(error));
   }
 
   render() {
@@ -78,8 +87,11 @@ export default class UserInfo extends Component {
         </Header>
 
         <View style={styles.container}>
-          <Image source={require("./ava.jpg")} style={styles.avatar} />
-          <Button style={styles.button} onPress={this.contactMe}>
+        {this.state.image?
+                  <Image style={styles.avatar} source={{ uri: this.state.image }} /> :
+                  <Image source={require("./ava.jpg")} style={styles.avatar} />
+                }
+          <Button style={styles.button} onPress={this.pickImg}>
             <Icon active style={styles.icon} name="camera" />
             <Text style={styles.text}>Add Photo</Text>
           </Button>
@@ -140,18 +152,18 @@ export default class UserInfo extends Component {
 
             <ListItem style={styles.list}>
               <Left>
-                <Text>Email</Text>
+                <Text>Mobile</Text>
               </Left>
               <Body />
               <Right>
                 <TextInput
                   underlineColorIos="grey"
                   style={styles.info}
-                  text={this.state.Email}
-                  onTextChange={Email => this.setState({ Email })}
-                  placeholder="Your Email"
-                  value={this.state.Email}
-                  onChangeText={Email => this.setState({ Email })}
+                  text={this.state.Mobile}
+                  onTextChange={Mobile => this.setState({ Mobile })}
+                  placeholder="Mobile Number"
+                  value={this.state.Mobile}
+                  onChangeText={Mobile => this.setState({ Mobile })}
                 />
               </Right>
             </ListItem>
@@ -199,10 +211,6 @@ export default class UserInfo extends Component {
               <Icon name="ios-add-circle" />
               <Text>Save</Text>
             </Button>
-            <Button style={styles.clear} onPress={this.clear}>
-              <Icon name="trash" />
-              <Text>Clear</Text>
-            </Button>
           </Container>
         </View>
       </View>
@@ -213,28 +221,31 @@ export default class UserInfo extends Component {
     this.props.navigation.dispatch({ type: "Navigation/BACK" });
   };
 
+  pickImg = () => {
+    this.pickImage();
+  };
+
+
+
   logout = () => {
     this.props.navigation.navigate("Login");
   };
 
   save = () => {
     var info = {
+      image: this.state.image,
       Name: this.state.Name,
       Birthday: this.state.Birthday,
       Gender: this.state.Gender,
       Height: this.state.Height,
       Weight: this.state.Weight,
-      Email: this.state.Email,
+      Mobile: this.state.Mobile,
     };
     console.log("info:", info);
     this.userRef.update({ info });
     this.props.navigation.navigate("UserInfo");
   };
 
-  clear = () => {
-
- //clear the form
-  };
 
 
 }
@@ -290,14 +301,14 @@ const styles = StyleSheet.create({
   decision: {
     marginTop: 10,
     flexDirection: "row",
-    justifyContent: "space-between"
+    justifyContent: "center"
   },
 
   add: {
     marginLeft: 20,
     height: 30,
-    backgroundColor: "#bfeefc",
-    width: 120,
+    backgroundColor: "#b5dcff",
+    width: 200,
     margin: 1,
     justifyContent: "center"
   },

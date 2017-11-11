@@ -137,6 +137,7 @@ export default class MyDiary extends Component {
             <Text style={{ marginRight: 10 }}>Swipe Right</Text>
           </Button>
         </View>
+        
       </Container>
     );
   }
@@ -157,7 +158,7 @@ const styles = StyleSheet.create({
     color: "red"
   },
   button: {
-    height: 50,
+    height: 40,
     backgroundColor: "rgba(44,122,125,0.2)",
     width: 140,
     margin: 5,

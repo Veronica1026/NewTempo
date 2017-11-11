@@ -40,7 +40,8 @@ const LATITUDE = 0;
 const LONGITUDE = 0;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
-var line = [];
+
+
 
 export default class Exercise extends Component {
   static navigationOptions = {
@@ -52,6 +53,8 @@ export default class Exercise extends Component {
     super();
     this.watchID = null;
     this.positions = [];
+
+
     this.distance = 0;
     this.totalTime = 0;
     this.state = {
@@ -88,8 +91,11 @@ export default class Exercise extends Component {
 
     this.watchID = navigator.geolocation.watchPosition(position => {
       console.log("position changed!. Total positions:", this.positions);
+
       this.positions.push(position);
-      //we need to draw a line while the user is moving
+
+
+
       this.setState({
         region: {
           latitude: position.coords.latitude,
@@ -133,7 +139,8 @@ export default class Exercise extends Component {
           onRegionChangeComplete={region => this.setState({ region })}
         >
           <MapView.Marker coordinate={this.state.region} />
-          <MapView.Polyline coordinate={line} strokeWidth={2} strokeColor="red"/> // draw the polly line?
+        
+
         </MapView>
 
         <View style={styles.container}>
@@ -159,11 +166,13 @@ export default class Exercise extends Component {
     this.distance = 0;
     this.totalTime = 0;
     this.positions.length = 0;
-    line = this.positions;
+
+
   };
 
   finish = () => {
     //calculate total time duration
+
     this.totalTime =
       (this.positions[this.positions.length - 1].timestamp -
         this.positions[0].timestamp) /

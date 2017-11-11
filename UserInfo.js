@@ -10,7 +10,10 @@ import {
   DatePickerIOS,
   TouchableOpacity
 } from "react-native";
-import { StackNavigator } from "react-navigation";
+import {
+  StackNavigator,
+  NavigationActions
+} from "react-navigation";
 import {
   Container,
   Header,
@@ -29,6 +32,8 @@ import {
 } from "native-base";
 import firebaseApp from "./FirebaseConfig";
 
+var information=[];
+
 export default class UserInfo extends Component {
   static navigationOptions = {
     title: "UserInfo",
@@ -39,7 +44,7 @@ export default class UserInfo extends Component {
     super(props);
     const userId = 123;
     this.userRef = this.getRef().child("users/"+ userId + "/");
-    var information;
+    this.getInfo();
 
   }
   componentDidMount() {
@@ -55,8 +60,7 @@ getInfo(){
   this.userRef.on('value', function(snapshot) {
   snapshot.forEach(function(childSnapshot) {
      information = childSnapshot.val();
-    console.log(information.Name);
-    console.log(information.Height);
+
   });
 });
 }
@@ -81,7 +85,13 @@ getInfo(){
         </Header>
 
         <View style={styles.container}>
-          <Image source={require("./ava.jpg")} style={styles.avatar} />
+
+        {information.image?
+                  <Image style={styles.avatar} source={{ uri: information.image }} /> :
+                  <Image source={require("./ava.jpg")} style={styles.avatar} />
+                }
+
+
 
           <View style={styles.listV}>
             <Separator bordered style={styles.sep}>
@@ -93,7 +103,7 @@ getInfo(){
               </Left>
               <Body />
               <Right>
-                <Text style={styles.info}>Aron</Text>
+                <Text style={styles.info}>{information.Name}</Text>
               </Right>
             </ListItem>
             <ListItem style={styles.list}>
@@ -102,7 +112,7 @@ getInfo(){
               </Left>
               <Body />
               <Right>
-                <Text style={styles.info}>1992/11/8</Text>
+                <Text style={styles.info}>{information.Birthday}</Text>
               </Right>
             </ListItem>
             <ListItem style={styles.list}>
@@ -111,17 +121,17 @@ getInfo(){
               </Left>
               <Body />
               <Right>
-                <Text style={styles.info}>Male</Text>
+                <Text style={styles.info}>{information.Gender}</Text>
               </Right>
             </ListItem>
 
             <ListItem style={styles.list}>
               <Left>
-                <Text>Email</Text>
+                <Text>Mobile</Text>
               </Left>
               <Body />
               <Right>
-                <Text style={styles.info}>123@test.com</Text>
+                <Text style={styles.info}>{information.Mobile}</Text>
               </Right>
             </ListItem>
 
@@ -134,7 +144,7 @@ getInfo(){
               </Left>
               <Body />
               <Right>
-                <Text style={styles.info}>176cm</Text>
+                <Text style={styles.info}>{information.Height}</Text>
               </Right>
             </ListItem>
             <ListItem style={styles.list}>
@@ -143,7 +153,7 @@ getInfo(){
               </Left>
               <Body />
               <Right>
-                <Text style={styles.info}>70.0Kg</Text>
+                <Text style={styles.info}>{information.Weight}</Text>
               </Right>
             </ListItem>
           </View>
@@ -163,7 +173,9 @@ getInfo(){
   }
 
   drawer = () => {
-    this.props.navigation.dispatch({ type: "Navigation/BACK" });
+
+   this.props.navigation.navigate("Memberarea");
+    //this.props.navigation.dispatch({ type: "Navigation/BACK" });
   };
 
   logout = () => {
