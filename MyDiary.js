@@ -8,7 +8,8 @@ import {
   AsyncStorage,
   TextInput,
   DatePickerIOS,
-  TouchableOpacity
+  TouchableOpacity,
+  Dimensions
 } from "react-native";
 import { StackNavigator } from "react-navigation";
 import {
@@ -31,31 +32,57 @@ import {
   Button,
   Badge
 } from "native-base";
-import call from 'react-native-phone-call';
+import call from "react-native-phone-call";
+import firebaseApp from "./FirebaseConfig";
 
-const cards = [
-  {
-    text: "Sea",
-    name: "2017-11-24",
-    image: require("./sea.jpg")
-  },
-  {
-    text: "Night",
-    name: "2017-10-17",
-    image: require("./night.jpg")
-  },
-  {
-    text: "Tree",
-    name: "2017-09-27",
-    image: require("./tree.jpg")
-  }
-];
+var pics=[];
+var card=[]
+
+let { width, height } = Dimensions.get("window");
+
+
 
 export default class MyDiary extends Component {
   static navigationOptions = {
     title: "MyDiary",
     header: null
   };
+
+  constructor(props) {
+
+     super(props);
+
+     const userId = 123;
+     this.albumRef = this.getRef().child("album/"+ userId + "/");
+     this.getInfo();
+     console.log("pics: ", pics);
+     this.assign();
+     console.log("cards: ", card);
+   }
+
+
+   componentDidMount() {
+     this.getInfo();
+     this.assign();
+   }
+
+   getRef() {
+     return firebaseApp.database().ref();
+   }
+
+ getInfo(){
+   pics=[];
+   //get user information from firebase
+   this.albumRef.on('value', (snap) => {
+     // get children as an array
+
+
+     snap.forEach((child) => {
+           var p1=child.val().pic1;
+       pics.push({p1});
+     });
+       });
+     }
 
   render() {
     return (
@@ -72,15 +99,19 @@ export default class MyDiary extends Component {
             </Body>
             <Right>
               <Button transparent>
-                <Icon name="medkit" style={styles.medkit} onPress={this.callTU}/>
+                <Icon
+                  name="medkit"
+                  style={styles.medkit}
+                  onPress={this.callTU}
+                />
               </Button>
             </Right>
           </Header>
 
-          <View>
+          <View style={styles.cards}>
             <DeckSwiper
               ref={c => (this._deckSwiper = c)}
-              dataSource={cards}
+              dataSource={card}
               renderEmpty={() => (
                 <View style={{ alignSelf: "center" }}>
                   <Text>Over</Text>
@@ -88,23 +119,11 @@ export default class MyDiary extends Component {
               )}
               renderItem={item => (
                 <Card style={{ elevation: 3 }}>
-                  <CardItem>
-                    <Left>
-                      <Thumbnail source={item.image} />
-                      <Body>
-                        <Text>{item.text}</Text>
-                      </Body>
-                    </Left>
-                  </CardItem>
                   <CardItem cardBody>
                     <Image
                       style={{ height: 300, flex: 1 }}
                       source={item.image}
                     />
-                  </CardItem>
-                  <CardItem>
-                    <Icon name="heart" style={{ color: "#ED4A6A" }} />
-                    <Text>{item.name}</Text>
                   </CardItem>
                 </Card>
               )}
@@ -122,38 +141,49 @@ export default class MyDiary extends Component {
           }}
         >
           <Button
-            iconLeft
             onPress={() => this._deckSwiper._root.swipeLeft()}
             style={styles.button}
           >
             <Icon style={{ marginLeft: 10 }} name="arrow-back" />
-            <Text style={{ marginRight: 10 }}>Swipe Left</Text>
+            <Text>Swipe</Text>
+            <Icon style={{ marginRight: 10 }} name="arrow-forward" />
           </Button>
-          <Button
-            iconRight
-            onPress={() => this._deckSwiper._root.swipeRight()}
-            style={styles.button}
-          >
-            <Icon style={{ marginLeft: 10 }} name="arrow-forward" />
-            <Text style={{ marginRight: 10 }}>Swipe Right</Text>
+          <Button onPress={this.cameraPage} style={styles.button1}>
+            <Icon style={{ marginLeft: 10 }} name="camera" />
+            <Text style={{ marginRight: 10 }}>Add a pic</Text>
           </Button>
         </View>
-
       </Container>
     );
   }
 
   drawer = () => {
-    this.props.navigation.dispatch({ type: "Navigation/BACK" });
+
+     this.props.navigation.navigate("Memberarea");
   };
+cameraPage= () => {
+
+   this.props.navigation.navigate("cameraPage");
+};
+  assign=()=> {
+
+  card.push({image:require("./sea.jpg")});
+    card.push({image:require("./tree.jpg")});
+      card.push({image:require("./night.jpg")});
+        card.push({image:require("./sky1.jpg")});
+
+    for(var i=0;i<pics.length;i++){
+      card.push({image: pics[i]});
+    }
+  }
 
   callTU = () => {
-const callnumber = {
-  number: "0405416669", // the number to call, string value
-  prompt: true // the user would be prompt prior to the call
-};
-call(callnumber).catch(console.error);
-};
+    const callnumber = {
+      number: "0405416669", // the number to call, string value
+      prompt: true // the user would be prompt prior to the call
+    };
+    call(callnumber).catch(console.error);
+  };
 }
 
 const styles = StyleSheet.create({
@@ -172,7 +202,18 @@ const styles = StyleSheet.create({
     width: 140,
     margin: 10,
     justifyContent: "space-between",
-    alignSelf: "center",
-    margin: 10
+    alignSelf: "center"
+  },
+
+  button1: {
+    height: 40,
+    backgroundColor: "#b9d2f7",
+    width: 140,
+    margin: 10,
+    justifyContent: "space-between",
+    alignSelf: "center"
+  },
+  cards: {
+    marginTop: 30
   }
 });

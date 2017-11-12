@@ -60,7 +60,7 @@ export default class ContactMe extends Component {
         </Header>
 
         <ImageBackground
-          source={require("./sky1.jpg")}
+          source={require("./b1.jpg")}
           style={styles.backgroundImage}
         >
           <View style={styles.content}>
@@ -78,7 +78,7 @@ export default class ContactMe extends Component {
             />
 
             <Text   style={styles.text}>
-              Hi, there. My name is Yinuo Veronica Wang, and I am the designer
+                Hi, there. My name is Yinuo Veronica Wang, and I am the designer
               of this app. I wish it can bring a safe and enjoyable running
               experience. Please feel free to tell me how can I make
               improvements to this app. Love ya!
@@ -152,9 +152,11 @@ const styles = StyleSheet.create({
     textShadowRadius: 5,
   },
   text:{
-    width: "90%",
-    backgroundColor: "rgba(140,186,255,0)",
-    margin: 10,
+    width: "80%",
+    backgroundColor: "rgba(219,228,255,0.62)",
+    margin: 5,
+
+
   },
 
   text1:{
@@ -162,6 +164,7 @@ marginRight:20,
   },
 
   action: {
+    marginTop:10,
     backgroundColor: "rgba(140,186,255,0.39)",
     borderColor: "rgba(140,186,255,0.5)",
     borderWidth: 2,

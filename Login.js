@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     borderRadius: 15,
     width: 260,
-    alignSelf: "center"
+    alignSelf: "center",
   },
   buttonContainer: {
     marginTop: 20,

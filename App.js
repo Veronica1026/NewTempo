@@ -21,6 +21,8 @@ import MyDiary from "./MyDiary";
 import Statistics from "./Statistics";
 import UserInfo from "./UserInfo";
 import EditInfo from "./EditInfo";
+import cameraPage from "./cameraPage";
+import camera from "./camera";
 
 export default StackNavigator({
   Login: { screen: Login },
@@ -30,5 +32,7 @@ export default StackNavigator({
   MyDiary: { screen: MyDiary },
   Statistics: { screen: Statistics },
   UserInfo: { screen: UserInfo },
-  EditInfo: { screen: EditInfo }
+  EditInfo: { screen: EditInfo },
+  cameraPage: { screen: cameraPage},
+  camera: { screen: camera},
 });

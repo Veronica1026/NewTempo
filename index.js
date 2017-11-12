@@ -11,6 +11,8 @@ import MyDiary from "./MyDiary";
 import Statistics from "./Statistics";
 import UserInfo from "./UserInfo";
 import EditInfo from "./EditInfo";
+import cameraPage from "./cameraPage";
+import camera from "./camera";
 
 export default class Project extends Component {
   render() {

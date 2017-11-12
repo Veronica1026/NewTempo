@@ -53,7 +53,7 @@ export default class Statistics extends Component {
         </Header>
 
         <View style={styles.container}>
-          <Text style={styles.header1}>Monthly Summary</Text>
+          <Text style={styles.header1}>Summary</Text>
           <Text style={styles.header2}>2017-10</Text>
           <Text>3 activities</Text>
           <Container style={styles.bar}>
