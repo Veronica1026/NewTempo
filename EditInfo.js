@@ -212,8 +212,8 @@ export default class UserInfo extends Component {
 
   callTU = () => {
   const callnumber = {
-    number: "0405416669", // the number to call, string value
-    prompt: true // the user would be prompt prior to the call
+    number: "000", // the number to call, string value
+    prompt: false // the user would not be prompt prior to the call
   };
   call(callnumber).catch(console.error);
 };

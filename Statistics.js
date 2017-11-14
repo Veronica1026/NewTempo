@@ -26,13 +26,67 @@ import {
   Button,
   Badge
 } from "native-base";
-import call from 'react-native-phone-call';
+import call from "react-native-phone-call";
+import firebaseApp from "./FirebaseConfig";
+
+var recordsAll = [];
 
 export default class Statistics extends Component {
   static navigationOptions = {
     title: "Statistics",
     header: null
   };
+
+  constructor(props) {
+    super(props);
+    const userId = 123;
+    this.runRef = this.getRef().child("run/" + userId + "/");
+    this.getInfo(this.runRef);
+    this.calculateData();
+    this.totalTime;
+    this.totalDis;
+    this.avrgSpd;
+    this.actvt=recordsAll.length;
+    console.log("totalTime: ", this.totalTime);
+    console.log("totalDis: ", this.totalDis);
+    console.log("avrgSpd: ", this.avrgSpd);
+  }
+
+  getRef() {
+    return firebaseApp.database().ref();
+  }
+
+  getInfo(runRef) {
+    recordsAll = [];
+    runRef.on("value", snap => {
+      // get children as an array
+      var r = [];
+      snap.forEach(child => {
+        r = child.val();
+        recordsAll.push(r);
+      });
+    });
+  }
+
+  calculateData() {
+
+    var t=0;
+    var d=0;
+    var v=0;
+
+    for(var i=0;i<recordsAll.length;i++){
+      var d1=parseFloat(recordsAll[i].record.distance);
+      var t1=parseFloat(recordsAll[i].record.time);
+      d=d+d1;
+      t=t+t1;
+      v=d/t;
+    }
+    this.totalDis=d.toFixed(4);
+    this.totalTime=(t/60).toFixed(4);
+    this.avrgSpd=v.toFixed(4);
+
+  }
+
   render() {
     return (
       <View>
@@ -47,7 +101,7 @@ export default class Statistics extends Component {
           </Body>
           <Right>
             <Button transparent>
-              <Icon name="medkit" style={styles.medkit} onPress={this.callTU}/>
+              <Icon name="medkit" style={styles.medkit} onPress={this.callTU} />
             </Button>
           </Right>
         </Header>
@@ -55,17 +109,24 @@ export default class Statistics extends Component {
         <View style={styles.container}>
           <Text style={styles.header1}>Summary</Text>
           <Text style={styles.header2}>2017-10</Text>
-          <Text>3 activities</Text>
+          <Text>number of activities: {this.actvt}</Text>
+          
           <Container style={styles.bar}>
-            <Left>
-              <Text>Total Duration</Text>
-              <Text>5 hour 20 min</Text>
-            </Left>
-            <Body />
-            <Right>
-              <Text>Distance</Text>
-              <Text>6.72 Km</Text>
-            </Right>
+
+
+
+
+              <Text>Total Time (min)</Text>
+              <Text> {this.totalTime} </Text>
+
+
+
+              <Text>Distance (Km)</Text>
+              <Text>{this.totalDis}</Text>
+
+              <Text>Average Speed (m/s)</Text>
+              <Text>{this.avrgSpd}</Text>
+
           </Container>
         </View>
       </View>
@@ -77,13 +138,12 @@ export default class Statistics extends Component {
   };
 
   callTU = () => {
-  const callnumber = {
-    number: "0405416669", // the number to call, string value
-    prompt: true // the user would be prompt prior to the call
+    const callnumber = {
+      number: "000", // the number to call, string value
+      prompt: false // the user would not be prompt prior to the call
+    };
+    call(callnumber).catch(console.error);
   };
-  call(callnumber).catch(console.error);
-};
-
 }
 
 const styles = StyleSheet.create({
@@ -96,7 +156,7 @@ const styles = StyleSheet.create({
   },
   bar: {
     margin: 30,
-    flexDirection: "row",
+    flexDirection: "column",
     flex: 1,
     alignSelf: "stretch",
     justifyContent: "space-between"

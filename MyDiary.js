@@ -70,19 +70,19 @@ export default class MyDiary extends Component {
      return firebaseApp.database().ref();
    }
 
- getInfo(){
-   pics=[];
-   //get user information from firebase
-   this.albumRef.on('value', (snap) => {
-     // get children as an array
 
+       getInfo() {
+          pics=[];
+         //get user information from firebase
+         this.albumRef.on("value", function(snapshot) {
+           snapshot.forEach(function(childSnapshot) {
+             var p1 = childSnapshot.val();
+           pics.push({p1});
 
-     snap.forEach((child) => {
-           var p1=child.val().pic1;
-       pics.push({p1});
-     });
-       });
-     }
+           });
+         });
+       }
+
 
   render() {
     return (
@@ -150,7 +150,7 @@ export default class MyDiary extends Component {
           </Button>
           <Button onPress={this.cameraPage} style={styles.button1}>
             <Icon style={{ marginLeft: 10 }} name="camera" />
-            <Text style={{ marginRight: 10 }}>Add a pic</Text>
+            <Text style={{ marginRight: 10 }}>Add One Pic</Text>
           </Button>
         </View>
       </Container>
@@ -166,21 +166,22 @@ cameraPage= () => {
    this.props.navigation.navigate("cameraPage");
 };
   assign=()=> {
-
+card=[];
   card.push({image:require("./sea.jpg")});
     card.push({image:require("./tree.jpg")});
       card.push({image:require("./night.jpg")});
         card.push({image:require("./sky1.jpg")});
 
-    for(var i=0;i<pics.length;i++){
-      card.push({image: pics[i]});
-    }
+var temp=("uri: ",pics).toString();
+
+      card.push({image: {temp}});
+
   }
 
   callTU = () => {
     const callnumber = {
-      number: "0405416669", // the number to call, string value
-      prompt: true // the user would be prompt prior to the call
+      number: "000", // the number to call, string value
+      prompt: false // the user would not be prompt prior to the call
     };
     call(callnumber).catch(console.error);
   };

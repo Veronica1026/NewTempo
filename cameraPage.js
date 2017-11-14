@@ -115,8 +115,8 @@ export default class cameraPage extends Component {
 
   callTU = () => {
     const callnumber = {
-      number: "0405416669", // the number to call, string value
-      prompt: true // the user would be prompt prior to the call
+      number: "000", // the number to call, string value
+      prompt: false // the user would not be prompt prior to the call
     };
     call(callnumber).catch(console.error);
   };
@@ -130,8 +130,10 @@ export default class cameraPage extends Component {
     //this.props.navigation.dispatch({ type: "Navigation/BACK" });
   };
   save = () => {
-    this.albumRef.push({pic1});
-    alert("photo saved!");
+    var p1="pic";
+    this.albumRef.child(p1).set(pic1);
+
+    alert("Successful!","photo saved!");
 
   };
 }
