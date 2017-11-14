@@ -218,9 +218,7 @@ export default class UserInfo extends Component {
   call(callnumber).catch(console.error);
 };
 
-  logout = () => {
-    this.props.navigation.navigate("Login");
-  };
+
 
   save = () => {
     var info = {

@@ -91,7 +91,11 @@ export default class MyDiary extends Component {
           <Header style={styles.header}>
             <Left>
               <Button transparent>
-                <Icon name="menu" onPress={this.drawer} />
+              <Icon
+                name="medkit"
+                style={styles.medkit}
+                onPress={this.callTU}
+              />
               </Button>
             </Left>
             <Body>
@@ -99,11 +103,8 @@ export default class MyDiary extends Component {
             </Body>
             <Right>
               <Button transparent>
-                <Icon
-                  name="medkit"
-                  style={styles.medkit}
-                  onPress={this.callTU}
-                />
+                <Icon name="menu" onPress={this.drawer} />
+
               </Button>
             </Right>
           </Header>

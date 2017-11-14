@@ -46,7 +46,7 @@ export default class ContactMe extends Component {
         <Header style={styles.header}>
           <Left>
             <Button transparent>
-              <Icon name="menu" onPress={this.drawer} />
+            <Icon name="medkit" style={styles.medkit} onPress={this.callTU} />
             </Button>
           </Left>
           <Body>
@@ -54,7 +54,7 @@ export default class ContactMe extends Component {
           </Body>
           <Right>
             <Button transparent>
-              <Icon name="medkit" style={styles.medkit} onPress={this.callTU} />
+                <Icon name="menu" onPress={this.drawer} />
             </Button>
           </Right>
         </Header>
@@ -107,7 +107,8 @@ export default class ContactMe extends Component {
   call(callnumber).catch(console.error);
 };
   drawer = () => {
-    this.props.navigation.dispatch({ type: "Navigation/BACK" });
+
+         this.props.navigation.navigate("Memberarea");
   };
 
   sendEmail = () => {

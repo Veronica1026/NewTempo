@@ -72,17 +72,18 @@ getInfo(){
       <View>
         <Header style={styles.header}>
           <Left>
-            <Button transparent>
-              <Icon name="menu" onPress={this.drawer} />
-            </Button>
+          <Button transparent>
+            <Icon name="medkit" style={styles.medkit} onPress={this.callTU}/>
+          </Button>
           </Left>
           <Body>
             <Title>My Account</Title>
           </Body>
           <Right>
-            <Button transparent>
-              <Icon name="medkit" style={styles.medkit} onPress={this.callTU}/>
-            </Button>
+          <Button transparent>
+            <Icon name="menu" onPress={this.drawer} />
+          </Button>
+
           </Right>
         </Header>
 

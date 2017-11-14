@@ -117,16 +117,17 @@ export default class Exercise extends Component {
       <View>
         <Header style={styles.header}>
           <Left>
-            <Button transparent onPress={this.drawer}>
-              <Icon name="menu" />
+          <Button transparent>
+            <Icon name="medkit" style={styles.medkit} onPress={this.callTU}/>
             </Button>
           </Left>
           <Body>
             <Title>Run</Title>
           </Body>
           <Right>
-            <Button transparent>
-              <Icon name="medkit" style={styles.medkit} onPress={this.callTU}/>
+          <Button transparent onPress={this.drawer}>
+            <Icon name="menu" />
+
             </Button>
           </Right>
         </Header>
@@ -159,7 +160,7 @@ export default class Exercise extends Component {
     );
   }
   drawer = () => {
-    this.props.navigation.dispatch({ type: "Navigation/BACK" });
+    this.props.navigation.navigate("Memberarea");
   };
 
   start = () => {
