@@ -147,7 +147,7 @@ export default class Statistics extends Component {
   callTU = () => {
     const callnumber = {
       number: "000", // the number to call, string value
-      prompt: false // the user would not be prompt prior to the call
+      prompt: true // the user would not be prompt prior to the call
     };
     call(callnumber).catch(console.error);
   };
