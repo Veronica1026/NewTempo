@@ -71,8 +71,8 @@ export default class Login extends Component<{}> {
 
   constructor(props) {
     super(props);
-
     this.state = {
+      //I set the default email and password account just like the "remember me" mode, so the TA and professor will not bother if they forget the password or username
       email: "123@test.com",
       password: "123123",
       error: "",
@@ -83,20 +83,19 @@ export default class Login extends Component<{}> {
   login = () => {
     this.setState({ error: "", loading: true });
     const { email, password } = this.state;
-
+    // the user should not leave the email or password empty, otherwise authentication will fail
     if (this.state.email === "") {
       alert("Authentication failed, please enter correct email/password!");
     } else if (this.state.password === "") {
       alert("Authentication failed, please enter correct email/password!");
     } else {
+      //firebase authentication
       firebase
         .auth()
         .signInWithEmailAndPassword(email, password)
         .then(user => {
-          console.log(user);
           this.setState({ error: "", loading: false });
-
-          this.props.navigation.navigate("Memberarea", { userId: "Brent" });
+          this.props.navigation.navigate("Memberarea");
         })
         .catch(() => {
           this.setState({ error: "Authentication failed.", loading: false });
@@ -104,6 +103,11 @@ export default class Login extends Component<{}> {
         });
     }
   };
+
+  /**
+   * register new accounts
+   * as currently the backend setting is not secure, so this is not a recommanded action currently
+   */
   reg = () => {
     this.setState({ error: "", loading: true });
     const { email, password } = this.state;
@@ -169,7 +173,6 @@ const styles = StyleSheet.create({
     textShadowRadius: 10,
     backgroundColor: "rgba(30,50,59,0)"
   },
-
   input: {
     fontSize: 16,
     height: 40,
@@ -180,7 +183,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     borderRadius: 15,
     width: 260,
-    alignSelf: "center",
+    alignSelf: "center"
   },
   buttonContainer: {
     marginTop: 20,

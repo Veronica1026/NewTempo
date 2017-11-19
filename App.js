@@ -33,6 +33,6 @@ export default StackNavigator({
   Statistics: { screen: Statistics },
   UserInfo: { screen: UserInfo },
   EditInfo: { screen: EditInfo },
-  cameraPage: { screen: cameraPage},
-  camera: { screen: camera},
+  cameraPage: { screen: cameraPage },
+  camera: { screen: camera }
 });

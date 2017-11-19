@@ -30,7 +30,7 @@ import {
   Badge
 } from "native-base";
 import call from "react-native-phone-call";
-import email from 'react-native-email';
+import email from "react-native-email";
 
 let { width, height } = Dimensions.get("window");
 
@@ -46,7 +46,7 @@ export default class ContactMe extends Component {
         <Header style={styles.header}>
           <Left>
             <Button transparent>
-            <Icon name="medkit" style={styles.medkit} onPress={this.callTU} />
+              <Icon name="medkit" style={styles.medkit} onPress={this.callTU} />
             </Button>
           </Left>
           <Body>
@@ -54,7 +54,7 @@ export default class ContactMe extends Component {
           </Body>
           <Right>
             <Button transparent>
-                <Icon name="menu" onPress={this.drawer} />
+              <Icon name="menu" onPress={this.drawer} />
             </Button>
           </Right>
         </Header>
@@ -65,7 +65,6 @@ export default class ContactMe extends Component {
         >
           <View style={styles.content}>
             <Text style={styles.logo1}>A Word From Developer</Text>
-
             <Image
               source={require("./auth.jpg")}
               style={{
@@ -76,14 +75,12 @@ export default class ContactMe extends Component {
                 margin: 20
               }}
             />
-
-            <Text   style={styles.text}>
-                Hi, there. My name is Yinuo Veronica Wang, and I am the designer
+            <Text style={styles.text}>
+              Hi, there. My name is Yinuo Veronica Wang, and I am the designer
               of this app. I wish it can bring a safe and enjoyable running
               experience. Please feel free to tell me how can I make
               improvements to this app. Love ya!
             </Text>
-
             <Button
               transparent
               textStyle={{ color: "#87838B" }}
@@ -100,28 +97,28 @@ export default class ContactMe extends Component {
   }
 
   callTU = () => {
-  const callnumber = {
-    number: "000", // the number to call, string value
-    prompt:  true // the user would not be prompt prior to the call
+    const callnumber = {
+      number: "000", // the number to call, string value
+      prompt: true // the user would  be prompted prior to the call
+    };
+    call(callnumber).catch(console.error);
   };
-  call(callnumber).catch(console.error);
-};
-  drawer = () => {
 
-         this.props.navigation.navigate("Memberarea");
+  drawer = () => {
+    this.props.navigation.navigate("Memberarea");
   };
 
   sendEmail = () => {
-    const to = ['yinuow1@andrew.cmu.edu', 'yinuowangnj@163.com'] // string or array my email addresses
+    const to = ["yinuow1@andrew.cmu.edu", "yinuowangnj@163.com"]; // string or array of my email addresses
     email(to, {
-        // Optional additional arguments
-        cc: ['findronniehere@gmail.com', 'doooo@daaa.com'], // string or array of email addresses
-        bcc: 'jinleiw@andrew.cmu.edu', // string or array of email addresses
-        subject: 'I have something to say...',
-        body: 'Welcome to write down your experiences here and this email to me...'
-    }).catch(console.error)
+      // Optional additional arguments
+      cc: ["findronniehere@gmail.com", "doooo@daaa.com"], // string or array of other email addresses
+      bcc: "jinleiw@andrew.cmu.edu", // string or array of email addresses
+      subject: "I have something to say...", //defualt email title
+      body:
+        "Welcome to write down your experiences here and this email to me..." //default email body
+    }).catch(console.error);
   };
-
 }
 
 const styles = StyleSheet.create({
@@ -136,12 +133,11 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   content: {
-    flex:1,
-    alignItems: "center",
-
+    flex: 1,
+    alignItems: "center"
   },
   logo1: {
-    marginTop:30,
+    marginTop: 30,
     color: "rgb(52, 85, 155)",
     fontSize: 20,
     margin: 30,
@@ -150,27 +146,25 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(44,122,125,0)",
     textShadowColor: "#6292f7",
     textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 5,
+    textShadowRadius: 5
   },
-  text:{
+  text: {
     width: "80%",
     backgroundColor: "rgba(219,228,255,0.62)",
-    margin: 5,
-
-
+    margin: 5
   },
 
-  text1:{
-marginRight:20,
+  text1: {
+    marginRight: 20
   },
 
   action: {
-    marginTop:10,
+    marginTop: 10,
     backgroundColor: "rgba(140,186,255,0.39)",
     borderColor: "rgba(140,186,255,0.5)",
     borderWidth: 2,
-    alignSelf:'center',
+    alignSelf: "center",
     width: "90%",
-    borderRadius:20,
+    borderRadius: 20
   }
 });

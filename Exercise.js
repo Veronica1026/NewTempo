@@ -32,7 +32,7 @@ import {
 } from "native-base";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import firebaseApp from "./FirebaseConfig";
-import call from 'react-native-phone-call';
+import call from "react-native-phone-call";
 
 let { width, height } = Dimensions.get("window");
 
@@ -41,8 +41,6 @@ const LATITUDE = 0;
 const LONGITUDE = 0;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
-
-
 
 export default class Exercise extends Component {
   static navigationOptions = {
@@ -54,20 +52,18 @@ export default class Exercise extends Component {
     super();
     this.watchID = null;
     this.positions = [];
-
-
-    this.distance = 0;
-    this.totalTime = 0;
-    this.state = {
+    this.distance = 0;// initialize the value to be zero
+    this.totalTime = 0;// initialize the value to be zero
+     this.state = {
       region: {
         latitude: LATITUDE,
         longitude: LONGITUDE,
         latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA
+        longitudeDelta: LONGITUDE_DELTA,
       }
     };
     const userId = 123;
-    this.runRef = this.getRef().child("run/" + userId + "/");
+    this.runRef = this.getRef().child("run/" + userId + "/"); //the firebase node which records the user's running records
   }
 
   getRef() {
@@ -91,12 +87,7 @@ export default class Exercise extends Component {
     );
 
     this.watchID = navigator.geolocation.watchPosition(position => {
-      console.log("position changed!. Total positions:", this.positions);
-
-      this.positions.push(position);
-
-
-
+      this.positions.push(position);//get the longtitude and latitude of every spot once the user is detected to have moved
       this.setState({
         region: {
           latitude: position.coords.latitude,
@@ -117,17 +108,16 @@ export default class Exercise extends Component {
       <View>
         <Header style={styles.header}>
           <Left>
-          <Button transparent>
-            <Icon name="medkit" style={styles.medkit} onPress={this.callTU}/>
+            <Button transparent>
+              <Icon name="medkit" style={styles.medkit} onPress={this.callTU} />
             </Button>
           </Left>
           <Body>
             <Title>Run</Title>
           </Body>
           <Right>
-          <Button transparent onPress={this.drawer}>
-            <Icon name="menu" />
-
+            <Button transparent onPress={this.drawer}>
+              <Icon name="menu" />
             </Button>
           </Right>
         </Header>
@@ -141,8 +131,6 @@ export default class Exercise extends Component {
           onRegionChangeComplete={region => this.setState({ region })}
         >
           <MapView.Marker coordinate={this.state.region} />
-
-
         </MapView>
 
         <View style={styles.container}>
@@ -150,7 +138,6 @@ export default class Exercise extends Component {
             <Icon active style={styles.icon} name="ios-walk" />
             <Text style={styles.text}>Start!</Text>
           </Button>
-
           <Button style={styles.button2} onPress={this.finish}>
             <Icon active style={styles.icon} name="md-happy" />
             <Text style={styles.text}>Finish!</Text>
@@ -165,34 +152,31 @@ export default class Exercise extends Component {
 
   start = () => {
     Alert.alert("Go! Go! Go!", "Timing and location tracking started!");
-    this.distance = 0;
-    this.totalTime = 0;
-    this.positions.length = 0;
+    this.distance = 0;//set the value to zero in case it already has values of the last time running
+    this.totalTime = 0;//set the value to zero in case it already has values of the last time running
+    this.positions.length = 0;//set the value to zero in case it already has values of the last time running
   };
 
   callTU = () => {
     const callnumber = {
       number: "000", // the number to call, string value
-      prompt: true // the user would not be prompt prior to the call
+      prompt: true // the user would be prompted prior to the call
     };
     call(callnumber).catch(console.error);
   };
 
   finish = () => {
     //calculate total time duration
-
     this.totalTime =
       (this.positions[this.positions.length - 1].timestamp -
         this.positions[0].timestamp) /
       1000;
 
     // calculate distances
-    var p = 0.017453292519943295; // Math.PI / 180
+    var p = 0.017453292519943295; // this number is (Math.PI / 180)
     var c = Math.cos;
-    var a,
-      d,
-      avgSpeed,
-      sum = 0;
+    var a, d, avgSpeed;
+    var sum = 0;
 
     //using Haversine formula to calculate the sum of distances of every pair of two near location points
     for (i = 0; i < this.positions.length - 1; i++) {
@@ -217,6 +201,7 @@ export default class Exercise extends Component {
       sum += d;
     }
     this.distance = sum;
+    //calculate the average speed using the total distance and total time, and the unit is converted to meters per second.
     avgSpeed = this.distance * 1000 / this.totalTime;
     Alert.alert(
       "Well done!",
@@ -239,7 +224,6 @@ export default class Exercise extends Component {
       time: this.totalTime.toFixed(4),
       speed: avgSpeed.toFixed(4)
     };
-    console.log("records:", record);
     this.runRef.push({ record });
   };
 }
@@ -253,7 +237,6 @@ const styles = StyleSheet.create({
     height: "68%",
     width: "100%"
   },
-
   medkit: {
     color: "red"
   },
@@ -274,13 +257,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignSelf: "center"
   },
-
   text: {
     fontSize: 15,
     fontWeight: "bold",
     color: "white"
   },
-
   icon: {
     fontSize: 30,
     color: "white"

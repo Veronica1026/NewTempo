@@ -11,7 +11,6 @@ import {
   Platform
 } from "react-native";
 import { StackNavigator } from "react-navigation";
-
 import {
   Drawer,
   Container,
@@ -22,21 +21,16 @@ import {
   Icon,
   Badge
 } from "native-base";
-
+/**
+* the entries to different function pages
+*/ 
 export default class Memberarea extends Component {
-
-
   static navigationOptions = {
     title: "Memberarea",
     header: null
   };
 
-  // constructor(props) {
-  //   super(props);
-  //   console.log('screenProps are:', props.screenProps);
-  // }
   getUserId() {
-    //TODO: validation, log user out maybe?
     return this.props.navigation.state.params.userId;
   }
 
@@ -129,7 +123,6 @@ const styles = StyleSheet.create({
     marginTop: 140,
     flex: 1
   },
-
   button: {
     height: 60,
     backgroundColor: "rgba(44,122,125,0)",
@@ -137,18 +130,15 @@ const styles = StyleSheet.create({
     margin: 5,
     justifyContent: "flex-start"
   },
-
   text: {
     fontSize: 15,
     fontWeight: "bold",
     color: "white"
   },
-
   icon: {
     fontSize: 30,
     color: "white"
   },
-
   logo1: {
     color: "white",
     fontSize: 40,

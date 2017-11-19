@@ -35,12 +35,9 @@ import {
 import call from "react-native-phone-call";
 import firebaseApp from "./FirebaseConfig";
 
-var pics=[];
-var card=[]
-
+var pics = [];
+var card = [];
 let { width, height } = Dimensions.get("window");
-
-
 
 export default class MyDiary extends Component {
   static navigationOptions = {
@@ -49,40 +46,32 @@ export default class MyDiary extends Component {
   };
 
   constructor(props) {
+    super(props);
+    const userId = 123;
+    this.albumRef = this.getRef().child("album/" + userId + "/");// this is the firebase data node that stores the pictures of the diary album
+    this.getInfo();
+    this.assign();
+  }
 
-     super(props);
+  componentDidMount() {
+    this.getInfo();
+    this.assign();
+  }
 
-     const userId = 123;
-     this.albumRef = this.getRef().child("album/"+ userId + "/");
-     this.getInfo();
-     console.log("pics: ", pics);
-     this.assign();
-     console.log("cards: ", card);
-   }
+  getRef() {
+    return firebaseApp.database().ref();
+  }
 
-
-   componentDidMount() {
-     this.getInfo();
-     this.assign();
-   }
-
-   getRef() {
-     return firebaseApp.database().ref();
-   }
-
-
-       getInfo() {
-          pics=[];
-         //get user information from firebase
-         this.albumRef.on("value", function(snapshot) {
-           snapshot.forEach(function(childSnapshot) {
-             var p1 = childSnapshot.val();
-           pics.push({p1});
-
-           });
-         });
-       }
-
+  getInfo() {
+    pics = [];
+    //get user photos from firebase
+    this.albumRef.on("value", function(snapshot) {
+      snapshot.forEach(function(childSnapshot) {
+        var p1 = childSnapshot.val();
+        pics.push({ p1 });
+      });
+    });
+  }
 
   render() {
     return (
@@ -91,11 +80,11 @@ export default class MyDiary extends Component {
           <Header style={styles.header}>
             <Left>
               <Button transparent>
-              <Icon
-                name="medkit"
-                style={styles.medkit}
-                onPress={this.callTU}
-              />
+                <Icon
+                  name="medkit"
+                  style={styles.medkit}
+                  onPress={this.callTU}
+                />
               </Button>
             </Left>
             <Body>
@@ -104,7 +93,6 @@ export default class MyDiary extends Component {
             <Right>
               <Button transparent>
                 <Icon name="menu" onPress={this.drawer} />
-
               </Button>
             </Right>
           </Header>
@@ -159,30 +147,26 @@ export default class MyDiary extends Component {
   }
 
   drawer = () => {
-
-     this.props.navigation.navigate("Memberarea");
+    this.props.navigation.navigate("Memberarea");
   };
-cameraPage= () => {
-
-   this.props.navigation.navigate("cameraPage");
-};
-  assign=()=> {
-card=[];
-  card.push({image:require("./sea.jpg")});
-    card.push({image:require("./tree.jpg")});
-      card.push({image:require("./night.jpg")});
-        card.push({image:require("./sky1.jpg")});
-
-var temp=("uri: ",pics).toString();
-
-      card.push({image: {temp}});
-
-  }
+  cameraPage = () => {
+    this.props.navigation.navigate("cameraPage");
+  };
+  assign = () => {
+    card = [];
+    //the first four photos are sample diary pics to inspire users to take their own diary photos
+    card.push({ image: require("./sea.jpg") });
+    card.push({ image: require("./tree.jpg") });
+    card.push({ image: require("./night.jpg") });
+    card.push({ image: require("./sky1.jpg") });
+    var temp = ("uri: ", pics).toString();
+    card.push({ image: { temp } });
+  };
 
   callTU = () => {
     const callnumber = {
       number: "000", // the number to call, string value
-      prompt: true // the user would not be prompt prior to the call
+      prompt: true // the user would be prompt prior to the call
     };
     call(callnumber).catch(console.error);
   };
@@ -194,7 +178,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center"
   },
-
   medkit: {
     color: "red"
   },
@@ -206,7 +189,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignSelf: "center"
   },
-
   button1: {
     height: 40,
     backgroundColor: "#b9d2f7",

@@ -29,7 +29,7 @@ import {
   Badge
 } from "native-base";
 import firebaseApp from "./FirebaseConfig";
-import call from 'react-native-phone-call';
+import call from "react-native-phone-call";
 
 export default class UserInfo extends Component {
   static navigationOptions = {
@@ -45,11 +45,10 @@ export default class UserInfo extends Component {
       Birthday: "",
       Gender: "",
       Height: "",
-      Weight: "",
-
+      Weight: ""
     };
     const userId = 123;
-    this.userRef = this.getRef().child("users/"+ userId + "/");
+    this.userRef = this.getRef().child("users/" + userId + "/");//the firebase data node which records the information of the users
     this.hanleChange.bind(this);
   }
 
@@ -62,10 +61,13 @@ export default class UserInfo extends Component {
   }
 
   pickImage() {
-    // openSelectDialog(config, successCallback, errorCallback);
-    ImagePickerIOS.openSelectDialog({}, imageUri => {
-      this.setState({ image: imageUri });
-    }, error => console.error(error));
+    ImagePickerIOS.openSelectDialog(
+      {},
+      imageUri => {
+        this.setState({ image: imageUri });
+      },
+      error => console.error(error)
+    );
   }
 
   render() {
@@ -82,16 +84,17 @@ export default class UserInfo extends Component {
           </Body>
           <Right>
             <Button transparent>
-              <Icon name="medkit" style={styles.medkit} onPress={this.callTU}/>
+              <Icon name="medkit" style={styles.medkit} onPress={this.callTU} />
             </Button>
           </Right>
         </Header>
 
         <View style={styles.container}>
-        {this.state.image?
-                  <Image style={styles.avatar} source={{ uri: this.state.image }} /> :
-                  <Image source={require("./ava.jpg")} style={styles.avatar} />
-                }
+          {this.state.image ? (
+            <Image style={styles.avatar} source={{ uri: this.state.image }} />
+          ) : (
+            <Image source={require("./ava.jpg")} style={styles.avatar} />
+          )}
           <Button style={styles.button} onPress={this.pickImg}>
             <Icon active style={styles.icon} name="camera" />
             <Text style={styles.text}>Add Photo</Text>
@@ -151,8 +154,6 @@ export default class UserInfo extends Component {
               </Right>
             </ListItem>
 
-
-
             <Separator bordered style={styles.sep}>
               <Text>Health Parameters</Text>
             </Separator>
@@ -207,18 +208,16 @@ export default class UserInfo extends Component {
   };
 
   pickImg = () => {
-    this.pickImage();
+    this.pickImage();//select a photo from the camera roll
   };
 
   callTU = () => {
-  const callnumber = {
-    number: "000", // the number to call, string value
-    prompt: true // the user would not be prompt prior to the call
+    const callnumber = {
+      number: "000", // the number to call, string value
+      prompt: true // the user would be prompted prior to the call
+    };
+    call(callnumber).catch(console.error);
   };
-  call(callnumber).catch(console.error);
-};
-
-
 
   save = () => {
     var info = {
@@ -227,16 +226,11 @@ export default class UserInfo extends Component {
       Birthday: this.state.Birthday,
       Gender: this.state.Gender,
       Height: this.state.Height,
-      Weight: this.state.Weight,
-
+      Weight: this.state.Weight
     };
-    console.log("info:", info);
     this.userRef.update({ info });
-    this.props.navigation.navigate("UserInfo");
+    this.props.navigation.navigate("UserInfo");//push the user's information into the firebase users node
   };
-
-
-
 }
 
 const styles = StyleSheet.create({
@@ -263,11 +257,9 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignSelf: "center"
   },
-
   text: {
     color: "grey"
   },
-
   icon: {
     color: "grey"
   },
@@ -292,7 +284,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center"
   },
-
   add: {
     marginLeft: 20,
     height: 30,
@@ -301,7 +292,6 @@ const styles = StyleSheet.create({
     margin: 10,
     justifyContent: "center"
   },
-
   clear: {
     marginRight: 20,
     height: 30,

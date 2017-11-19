@@ -40,15 +40,12 @@ export default class cameraPage extends Component {
   constructor(props) {
     super(props);
     const userId = 123;
-    this.albumRef = this.getRef().child("album/" + userId + "/");
-    this.picRef = this.getRef().child("photos/" + userId + "/");
+    this.albumRef = this.getRef().child("album/" + userId + "/");// for later on pushing the captured pic into the album node
+    this.picRef = this.getRef().child("photos/" + userId + "/"); //for later on getting the captured pic from the firebase photos node and render it in this page
     this.getInfo();
-
-
   }
   componentDidMount() {
     this.getInfo();
-
   }
   getRef() {
     return firebaseApp.database().ref();
@@ -59,12 +56,10 @@ export default class cameraPage extends Component {
   }
 
   getInfo() {
-    //get user information from firebase
+    //get captured photo from firebase
     this.picRef.on("value", function(snapshot) {
       snapshot.forEach(function(childSnapshot) {
         pic1 = childSnapshot.val();
-        console.log("get info called");
-        console.log("pic1 : ", pic1);
       });
     });
   }
@@ -94,9 +89,7 @@ export default class cameraPage extends Component {
         >
           <View style={styles.content}>
             <Text style={styles.logo1}>Add a New Diary</Text>
-
-            <Image  source={{ uri: pic1}} style={styles.result}/>
-
+            <Image source={{ uri: pic1 }} style={styles.result} />
 
             <Button style={styles.cam} onPress={this.cam}>
               <Icon name="camera" />
@@ -116,25 +109,23 @@ export default class cameraPage extends Component {
   callTU = () => {
     const callnumber = {
       number: "000", // the number to call, string value
-      prompt: true // the user would not be prompt prior to the call
+      prompt: true // the user would be prompted prior to the call
     };
     call(callnumber).catch(console.error);
   };
-  drawer = () => {
- this.props.navigation.navigate("MyDiary");
 
+  drawer = () => {
+    this.props.navigation.navigate("MyDiary");
   };
 
   cam = () => {
     this.props.navigation.navigate("camera");
-    //this.props.navigation.dispatch({ type: "Navigation/BACK" });
   };
+
   save = () => {
-    var p1="pic";
-    this.albumRef.child(p1).set(pic1);
-
-    alert("Successful!","photo saved!");
-
+    var p1 = "pic";
+    this.albumRef.child(p1).set(pic1); // push the photo to the firebase album node to add it to the diary album
+    alert("Successful!", "photo saved!");
   };
 }
 
@@ -142,7 +133,6 @@ const styles = StyleSheet.create({
   medkit: {
     color: "red"
   },
-
   cam: {
     height: 40,
     backgroundColor: "rgba(98,188,155,0.8)",
@@ -175,7 +165,6 @@ const styles = StyleSheet.create({
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 5
   },
-
   backgroundImage: {
     height: "100%",
     width: "100%",
@@ -198,7 +187,6 @@ const styles = StyleSheet.create({
     padding: 10,
     margin: 40
   },
-
   result: {
     height: 160,
     width: 200,

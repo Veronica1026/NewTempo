@@ -10,10 +10,7 @@ import {
   DatePickerIOS,
   TouchableOpacity
 } from "react-native";
-import {
-  StackNavigator,
-  NavigationActions
-} from "react-navigation";
+import { StackNavigator, NavigationActions } from "react-navigation";
 import {
   Container,
   Header,
@@ -30,11 +27,10 @@ import {
   Button,
   Badge
 } from "native-base";
-import call from 'react-native-phone-call'
+import call from "react-native-phone-call";
 import firebaseApp from "./FirebaseConfig";
 
-
-var information=[];
+var information = [];
 
 export default class UserInfo extends Component {
   static navigationOptions = {
@@ -45,57 +41,48 @@ export default class UserInfo extends Component {
   constructor(props) {
     super(props);
     const userId = 123;
-    this.userRef = this.getRef().child("users/"+ userId + "/");
+    this.userRef = this.getRef().child("users/" + userId + "/");// the firebase data node where all the information of the users is stored
     this.getInfo();
-
   }
   componentDidMount() {
     this.getInfo();
   }
-
   getRef() {
     return firebaseApp.database().ref();
   }
-
-getInfo(){
-  //get user information from firebase
-  this.userRef.on('value', function(snapshot) {
-  snapshot.forEach(function(childSnapshot) {
-     information = childSnapshot.val();
-
-  });
-});
-}
+  getInfo() {
+    //get user information from firebase
+    this.userRef.on("value", function(snapshot) {
+      snapshot.forEach(function(childSnapshot) {
+        information = childSnapshot.val();
+      });
+    });
+  }
 
   render() {
     return (
       <View>
         <Header style={styles.header}>
           <Left>
-          <Button transparent>
-            <Icon name="medkit" style={styles.medkit} onPress={this.callTU}/>
-          </Button>
+            <Button transparent>
+              <Icon name="medkit" style={styles.medkit} onPress={this.callTU} />
+            </Button>
           </Left>
           <Body>
             <Title>My Account</Title>
           </Body>
           <Right>
-          <Button transparent>
-            <Icon name="menu" onPress={this.drawer} />
-          </Button>
-
+            <Button transparent>
+              <Icon name="menu" onPress={this.drawer} />
+            </Button>
           </Right>
         </Header>
-
         <View style={styles.container}>
-
-        {information.image?
-                  <Image style={styles.avatar} source={{ uri: information.image }} /> :
-                  <Image source={require("./ava.jpg")} style={styles.avatar} />
-                }
-
-
-
+          {information.image ? (
+            <Image style={styles.avatar} source={{ uri: information.image }} />
+          ) : (
+            <Image source={require("./ava.jpg")} style={styles.avatar} />
+          )}
           <View style={styles.listV}>
             <Separator bordered style={styles.sep}>
               <Text>Basic Information</Text>
@@ -127,9 +114,6 @@ getInfo(){
                 <Text style={styles.info}>{information.Gender}</Text>
               </Right>
             </ListItem>
-
-
-
             <Separator bordered style={styles.sep}>
               <Text>Health Parameters</Text>
             </Separator>
@@ -168,18 +152,16 @@ getInfo(){
   }
 
   drawer = () => {
-
-   this.props.navigation.navigate("Memberarea");
-    //this.props.navigation.dispatch({ type: "Navigation/BACK" });
+    this.props.navigation.navigate("Memberarea");
   };
 
   callTU = () => {
-  const callnumber = {
-    number: "000", // the number to call, string value
-    prompt: true // the user would not be prompt prior to the call
+    const callnumber = {
+      number: "000", // the number to call, string value
+      prompt: true // the user would be prompted prior to the call
+    };
+    call(callnumber).catch(console.error);
   };
-  call(callnumber).catch(console.error);
-};
 
   logout = () => {
     this.props.navigation.navigate("Login");
@@ -206,12 +188,9 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderColor: "grey"
   },
-
-
   text: {
     color: "grey"
   },
-
   icon: {
     color: "grey"
   },
@@ -236,7 +215,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between"
   },
-
   add: {
     marginLeft: 20,
     height: 30,
@@ -245,7 +223,6 @@ const styles = StyleSheet.create({
     margin: 10,
     justifyContent: "center"
   },
-
   clear: {
     marginRight: 20,
     height: 30,

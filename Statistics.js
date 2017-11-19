@@ -7,7 +7,7 @@ import {
   AsyncStorage,
   TextInput,
   DatePickerIOS,
-    Dimensions,
+  Dimensions,
   TouchableOpacity,
   ImageBackground
 } from "react-native";
@@ -42,16 +42,13 @@ export default class Statistics extends Component {
   constructor(props) {
     super(props);
     const userId = 123;
-    this.runRef = this.getRef().child("run/" + userId + "/");
-    this.getInfo(this.runRef);
-    this.calculateData();
+    this.runRef = this.getRef().child("run/" + userId + "/"); // the data node where all the running records are stored
     this.totalTime;
     this.totalDis;
     this.avrgSpd;
-    this.actvt=recordsAll.length;
-    console.log("totalTime: ", this.totalTime);
-    console.log("totalDis: ", this.totalDis);
-    console.log("avrgSpd: ", this.avrgSpd);
+    this.actvt;
+    this.getInfo();
+    this.calculateData(); // calculate the statistics
   }
 
   getRef() {
@@ -60,7 +57,7 @@ export default class Statistics extends Component {
 
   getInfo(runRef) {
     recordsAll = [];
-    runRef.on("value", snap => {
+    this.runRef.on("value", snap => {
       // get children as an array
       var r = [];
       snap.forEach(child => {
@@ -68,25 +65,25 @@ export default class Statistics extends Component {
         recordsAll.push(r);
       });
     });
+    this.actvt = recordsAll.length;
   }
 
   calculateData() {
+    var t = 0;
+    var d = 0;
+    var v = 0;
 
-    var t=0;
-    var d=0;
-    var v=0;
-
-    for(var i=0;i<recordsAll.length;i++){
-      var d1=parseFloat(recordsAll[i].record.distance);
-      var t1=parseFloat(recordsAll[i].record.time);
-      d=d+d1;
-      t=t+t1;
-      v=d/t;
+    //loop through the array to get the total distances and time duration
+    for (var i = 0; i < recordsAll.length; i++) {
+      var d1 = parseFloat(recordsAll[i].record.distance);
+      var t1 = parseFloat(recordsAll[i].record.time);
+      d = d + d1;
+      t = t + t1;
+      v = d / t; // calculate avarage speed
     }
-    this.totalDis=d.toFixed(4);
-    this.totalTime=(t/60).toFixed(4);
-    this.avrgSpd=v.toFixed(4);
-
+    this.totalDis = d.toFixed(4);
+    this.totalTime = (t / 60).toFixed(4);
+    this.avrgSpd = v.toFixed(4);
   }
 
   render() {
@@ -94,60 +91,50 @@ export default class Statistics extends Component {
       <View>
         <Header style={styles.header}>
           <Left>
-          <Button transparent>
-            <Icon name="medkit" style={styles.medkit} onPress={this.callTU}/>
+            <Button transparent>
+              <Icon name="medkit" style={styles.medkit} onPress={this.callTU} />
             </Button>
           </Left>
           <Body>
             <Title>Statistics</Title>
           </Body>
           <Right>
-          <Button transparent onPress={this.drawer}>
-            <Icon name="menu" />
-
+            <Button transparent onPress={this.drawer}>
+              <Icon name="menu" />
             </Button>
           </Right>
         </Header>
         <ImageBackground
-                  source={require("./b1.jpg")}
-                  style={styles.backgroundImage}
-                >
-        <View style={styles.container}>
-          <Text style={styles.header1}>Summary</Text>
-
-          <Text style={styles.header2}>number of activities: {this.actvt}</Text>
-
-          <Container style={styles.bar}>
-
-
-
-
+          source={require("./b1.jpg")}
+          style={styles.backgroundImage}
+        >
+          <View style={styles.container}>
+            <Text style={styles.header1}>Summary</Text>
+            <Text style={styles.header2}>
+              number of activities: {this.actvt}
+            </Text>
+            <Container style={styles.bar}>
               <Text style={styles.header3}>Total Time (min)</Text>
               <Text style={styles.data}> {this.totalTime} </Text>
-
-
-
               <Text style={styles.header3}>Distance (Km)</Text>
               <Text style={styles.data}>{this.totalDis}</Text>
-
               <Text style={styles.header3}>Average Speed (m/s)</Text>
               <Text style={styles.data}>{this.avrgSpd}</Text>
-
-          </Container>
-        </View>
-          </ImageBackground>
+            </Container>
+          </View>
+        </ImageBackground>
       </View>
     );
   }
 
   drawer = () => {
-      this.props.navigation.navigate("Memberarea");
+    this.props.navigation.navigate("Memberarea");
   };
 
   callTU = () => {
     const callnumber = {
       number: "000", // the number to call, string value
-      prompt: true // the user would not be prompt prior to the call
+      prompt: true // the user would be prompt prior to the call
     };
     call(callnumber).catch(console.error);
   };
@@ -162,7 +149,7 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   container: {
-    flex:1,
+    flex: 1,
     justifyContent: "center",
     alignItems: "center"
   },
@@ -173,8 +160,7 @@ const styles = StyleSheet.create({
     margin: 30,
     flexDirection: "column",
     flex: 1,
-    alignSelf: "stretch",
-
+    alignSelf: "stretch"
   },
   header1: {
     textShadowColor: "#6292f7",
@@ -185,32 +171,29 @@ const styles = StyleSheet.create({
     margin: 20,
     fontStyle: "italic",
     fontWeight: "bold",
-    backgroundColor: "rgba(44,122,125,0)",
-
+    backgroundColor: "rgba(44,122,125,0)"
   },
   header2: {
-    alignSelf:'center',
+    alignSelf: "center",
     fontSize: 18,
     margin: 10,
     color: "#4286f4",
     fontWeight: "bold",
-    backgroundColor: "rgba(217,230,252,0.5)",
+    backgroundColor: "rgba(217,230,252,0.5)"
   },
-
   header3: {
-    alignSelf:'center',
+    alignSelf: "center",
     fontSize: 16,
     margin: 5,
     color: "#024e51",
     fontWeight: "bold",
-  backgroundColor: "rgba(44,122,125,0)",
-},
-data: {
-  alignSelf:'center',
-  fontSize: 16,
-  margin: 5,
-  color: "#065b49",
-backgroundColor: "rgba(213,239,234,0.5)",
-}
-
+    backgroundColor: "rgba(44,122,125,0)"
+  },
+  data: {
+    alignSelf: "center",
+    fontSize: 16,
+    margin: 5,
+    color: "#065b49",
+    backgroundColor: "rgba(213,239,234,0.5)"
+  }
 });
